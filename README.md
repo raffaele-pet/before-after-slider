@@ -1,16 +1,20 @@
-# Prima Dopo Slider
+# Before After Slider
 
-Applicazione web per confrontare due immagini con uno slider prima/dopo.
+A web app for comparing two images with a before-and-after slider.
 
-## Funzioni
+## Features
 
-- caricamento separato delle immagini Prima e Dopo
-- confronto tramite slider trascinabile
-- zoom e spostamento sincronizzati con mouse
-- controllo manuale di X, Y e zoom
-- registrazione 1080x1080 in MP4 o WebM
-- durata e nome del video configurabili
+- separate uploads for the Before and After images
+- comparison using a draggable slider
+- synchronized zooming and panning with the mouse
+- manual X, Y, and zoom controls
+- 1080x1080 recording in MP4 or WebM format
+- configurable video duration and file name
 
-## Avvio
+## Open the app
 
-L'applicazione e' contenuta in un singolo file HTML. Aprire `index.html` nel browser oppure servirla con un server HTTP locale.
+Use the published version at:
+
+https://raffaele-pet.github.io/before-after-slider/
+
+The application is contained in a single HTML file. Open `index.html` in a browser or serve it through a local HTTP server.

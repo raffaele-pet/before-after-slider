@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prima Dopo Slider</title>
+  <title>Before After Slider</title>
   <style>
     :root {
       color-scheme: dark;
@@ -500,26 +500,26 @@
 <body>
   <div class="toolbar" id="toolbar">
     <div class="record-controls">
-      <label class="toolbar-field" title="Durata registrazione">
+      <label class="toolbar-field" title="Recording duration">
         <span class="duration-control">
-          <input class="number-input duration-input" id="durationSeconds" type="number" min="0.5" max="120" step="0.5" value="4" aria-label="Durata registrazione in secondi">
+          <input class="number-input duration-input" id="durationSeconds" type="number" min="0.5" max="120" step="0.5" value="4" aria-label="Recording duration in seconds">
           <span class="duration-suffix" aria-hidden="true">s</span>
         </span>
       </label>
 
       <label class="toolbar-field">
-        <select class="format-select" id="videoFormat" aria-label="Formato video" title="Formato video">
+        <select class="format-select" id="videoFormat" aria-label="Video format" title="Video format">
           <option value="mp4" selected>MP4</option>
           <option value="webm">WebM</option>
         </select>
       </label>
 
       <label class="toolbar-field">
-        <input class="name-input" id="fileName" value="prima-dopo" aria-label="Nome video" title="Nome video">
+        <input class="name-input" id="fileName" value="before-after" aria-label="Video file name" title="Video file name">
       </label>
 
       <div class="toolbar-field record-field">
-        <button class="button" id="recordButton" type="button" disabled title="Registra">
+        <button class="button" id="recordButton" type="button" disabled title="Record">
           <span class="rec-dot" aria-hidden="true"></span>
           REC
         </button>
@@ -532,30 +532,30 @@
       <div class="stage" id="stage">
         <input class="file-input" id="beforeInput" type="file" accept="image/*">
         <input class="file-input" id="afterInput" type="file" accept="image/*">
-        <canvas id="viewer" aria-label="Prima dopo" title="Clic sinistra: Prima. Clic destra: Dopo. Trascina per spostare."></canvas>
+        <canvas id="viewer" aria-label="Before and after comparison" title="Click the left side to select Before. Click the right side to select After. Drag to pan."></canvas>
         <div class="upload-guides" aria-hidden="true">
-          <div class="upload-guide before-guide"><span>Prima</span></div>
-          <div class="upload-guide after-guide"><span>Dopo</span></div>
+          <div class="upload-guide before-guide"><span>Before</span></div>
+          <div class="upload-guide after-guide"><span>After</span></div>
         </div>
       </div>
 
-      <aside class="view-panel" aria-label="Navigazione immagine">
+      <aside class="view-panel" aria-label="Image navigation">
         <label class="view-field">
           <span class="view-label">X</span>
-          <input class="number-input" id="viewX" type="number" step="0.1" value="0" aria-label="Asse X">
+          <input class="number-input" id="viewX" type="number" step="0.1" value="0" aria-label="X axis">
         </label>
         <label class="view-field">
           <span class="view-label">Y</span>
-          <input class="number-input" id="viewY" type="number" step="0.1" value="0" aria-label="Asse Y">
+          <input class="number-input" id="viewY" type="number" step="0.1" value="0" aria-label="Y axis">
         </label>
         <label class="view-field">
           <span class="view-label">Zoom</span>
           <span class="percent-control">
-            <input class="number-input" id="viewZoom" type="number" min="5" max="51200" step="1" value="100" aria-label="Zoom percentuale">
+            <input class="number-input" id="viewZoom" type="number" min="5" max="51200" step="1" value="100" aria-label="Zoom percentage">
             <span class="percent-sign" aria-hidden="true">%</span>
           </span>
         </label>
-        <button class="button reset-button" id="resetViewButton" type="button" title="Ripristina vista">
+        <button class="button reset-button" id="resetViewButton" type="button" title="Reset view">
           <span class="reset-icon" aria-hidden="true">&#8634;</span>
           Reset
         </button>
@@ -623,7 +623,7 @@
 
     function sanitizeFileName(value, extension) {
       const trimmed = value.trim().replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, "-");
-      const safe = trimmed || "prima-dopo";
+      const safe = trimmed || "before-after";
       const base = safe.replace(/\.(webm|mp4)$/i, "");
       return `${base}.${extension}`;
     }
@@ -712,7 +712,7 @@
 
         image.onerror = () => {
           URL.revokeObjectURL(url);
-          reject(new Error("Immagine non valida"));
+          reject(new Error("Invalid image"));
         };
 
         image.src = url;
@@ -1061,14 +1061,14 @@
       }
 
       if (typeof MediaRecorder === "undefined") {
-        alert("Registrazione non supportata da questo browser");
+        alert("Recording is not supported by this browser");
         return;
       }
 
       const format = formatSelect.value;
       const recorderSettings = selectRecorderSettings(format);
       if (!recorderSettings) {
-        alert(`${format.toUpperCase()} non supportato da questo browser. Seleziona un altro formato.`);
+        alert(`${format.toUpperCase()} is not supported by this browser. Select another format.`);
         return;
       }
 
@@ -1077,7 +1077,7 @@
       recordingCanvas.height = EXPORT_SIZE;
 
       if (!recordingCanvas.captureStream) {
-        alert("Registrazione non supportata da questo browser");
+        alert("Recording is not supported by this browser");
         return;
       }
 
@@ -1102,7 +1102,7 @@
         });
       } catch (error) {
         stream.getTracks().forEach((track) => track.stop());
-        alert("Impossibile avviare la registrazione con il formato selezionato");
+        alert("Unable to start recording with the selected format");
         return;
       }
 
@@ -1136,7 +1136,7 @@
         if (!recorderFailed && blob.size) {
           downloadBlob(blob, recorderSettings.extension, requestedName);
         } else if (!recorderFailed) {
-          alert("La registrazione non ha prodotto dati video");
+          alert("The recording did not produce any video data");
         }
 
         restoreRecordingState();
@@ -1145,7 +1145,7 @@
       recorder.onerror = () => {
         recorderFailed = true;
         state.cancelRecordingAnimation?.();
-        alert("Errore durante la registrazione video");
+        alert("An error occurred while recording the video");
       };
 
       try {
@@ -1165,7 +1165,7 @@
           restoreRecordingState();
         }
 
-        alert("Impossibile completare la registrazione video");
+        alert("Unable to complete the video recording");
       }
     }
 
