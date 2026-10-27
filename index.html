@@ -496,9 +496,14 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="selection.css">
 </head>
 <body>
-  <div class="toolbar" id="toolbar">
+  <header class="toolbar" id="toolbar">
+    <nav class="app-modes" aria-label="Modalità dell’app">
+      <button class="button mode-button" id="sliderMode" type="button" aria-pressed="true" aria-controls="sliderApp">Before / After</button>
+      <button class="button mode-button" id="selectionMode" type="button" aria-pressed="false" aria-controls="selectionApp">Seleziona immagini</button>
+    </nav>
     <div class="record-controls">
       <label class="toolbar-field" title="Recording duration">
         <span class="duration-control">
@@ -525,9 +530,9 @@
         </button>
       </div>
     </div>
-  </div>
+  </header>
 
-  <main>
+  <main id="sliderApp">
     <div class="workspace">
       <div class="stage" id="stage">
         <input class="file-input" id="beforeInput" type="file" accept="image/*">
@@ -561,6 +566,56 @@
         </button>
       </aside>
     </div>
+  </main>
+
+  <main id="selectionApp" class="selection-app" hidden lang="it">
+    <div class="selection-sources">
+      <section class="selection-source" aria-label="Immagini a sinistra">
+        <strong>Sinistra <span id="leftCount" class="muted">0 immagini</span></strong>
+        <div class="source-actions">
+          <button class="button" type="button" data-pick="leftFiles">Immagini</button>
+          <button class="button" type="button" data-pick="leftFolder">Cartella</button>
+        </div>
+        <input class="file-input" id="leftFiles" type="file" accept="image/*" multiple aria-label="Carica immagini a sinistra" tabindex="-1">
+        <input class="file-input" id="leftFolder" type="file" accept="image/*" webkitdirectory multiple aria-label="Carica cartella a sinistra" tabindex="-1">
+      </section>
+      <section class="selection-source" aria-label="Immagini a destra">
+        <strong>Destra <span id="rightCount" class="muted">0 immagini</span></strong>
+        <div class="source-actions">
+          <button class="button" type="button" data-pick="rightFiles">Immagini</button>
+          <button class="button" type="button" data-pick="rightFolder">Cartella</button>
+        </div>
+        <input class="file-input" id="rightFiles" type="file" accept="image/*" multiple aria-label="Carica immagini a destra" tabindex="-1">
+        <input class="file-input" id="rightFolder" type="file" accept="image/*" webkitdirectory multiple aria-label="Carica cartella a destra" tabindex="-1">
+      </section>
+    </div>
+    <div class="selection-stage" id="selectionStage">
+      <canvas id="selectionCanvas" aria-label="Confronto delle immagini selezionate"></canvas>
+      <div class="selection-empty left-empty" id="leftEmpty">Carica immagini o una cartella a sinistra</div>
+      <div class="selection-empty right-empty" id="rightEmpty">Carica immagini o una cartella a destra</div>
+      <button class="remove-image remove-left" id="removeLeft" type="button" aria-label="Escludi immagine a sinistra" title="Escludi immagine a sinistra · Ctrl+Z per annullare" disabled>×</button>
+      <button class="remove-image remove-right" id="removeRight" type="button" aria-label="Escludi immagine a destra" title="Escludi immagine a destra · Ctrl+Z per annullare" disabled>×</button>
+      <div class="selection-divider" id="selectionDivider">
+        <div class="divider-handle" id="selectionHandle" role="slider" tabindex="0" aria-label="Posizione del confronto" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-orientation="horizontal">‹ ›</div>
+      </div>
+    </div>
+    <div class="selection-names"><span id="leftName">—</span><span id="rightName">—</span></div>
+    <div class="selection-controls">
+      <div class="pair-navigation" aria-label="Navigazione dei confronti">
+        <button class="button arrow-button" id="previousPair" type="button" aria-label="Confronto precedente" title="Precedente · Freccia sinistra" disabled>←</button>
+        <span id="pairCounter" aria-live="polite">0 / 0</span>
+        <button class="button arrow-button" id="nextPair" type="button" aria-label="Confronto successivo" title="Successivo · Freccia destra" disabled>→</button>
+        <button class="button" id="undoSelection" type="button" title="Ctrl+Z / ⌘Z" disabled>↶ Annulla</button>
+      </div>
+      <div class="selection-export">
+        <span id="keptCount" class="muted">0 da salvare</span>
+        <select class="format-select" id="imageFormat" aria-label="Formato immagini"><option value="png">PNG</option><option value="jpg">JPG</option></select>
+        <select class="format-select" id="saveDestination" aria-label="Destinazione salvataggio"><option value="folder">Cartella</option><option value="zip">Archivio ZIP</option></select>
+        <button class="button save-button" id="saveSelection" type="button" disabled>Salva immagini</button>
+      </div>
+    </div>
+    <p class="selection-help">Confronti in ordine di nome: 2 prima di 10. × esclude, Ctrl+Z ripristina; ← → cambia coppia. Gli originali restano intatti.</p>
+    <p class="selection-status" id="selectionStatus" role="status" aria-live="polite">Carica le due raccolte per iniziare. Puoi caricare la stessa cartella su entrambi i lati.</p>
   </main>
 
   <script>
@@ -1199,5 +1254,6 @@
     updateViewInputs();
     resizeCanvas();
   </script>
+  <script type="module" src="selection.js"></script>
 </body>
 </html>
